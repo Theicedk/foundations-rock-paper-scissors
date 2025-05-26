@@ -3,11 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Foundations: Rock - Paper - Scissors</title>
 </head>
 <body>
+
+    <div id="game">
+        <h1>Choose an option</h1>
+        <div class="buttons">
+            <button class="button-option" id="rock-btn"><img src="rockfinal.png" alt="piedra"></button>
+            <button class="button-option" id="paper-btn"><img src="paperfinal.png" alt="papel"></button>
+            <button class="button-option" id="scissors-btn"><img src="scissorsfinal.png" alt="tijera"></button>
+        </div>
+    </div>
+
+    <div id="game-display">
+
+    </div>
+
+    <div id="score-display">
+        <h2>Score</h2>
+        <h3>Player</h3>
+        <h4 id="human-score">
+            0
+        </h4>
+        <h3>Computer</h3>
+        <h4 id="computer-score">
+            0
+        </h4>
+    </div>
+
+    <div id="endgame-result">
+
+    </div>
+
+
     <script>
-        console.log("Hello World!");
         let humanScore = 0;
         let computerScore = 0;
         
@@ -27,8 +58,8 @@
         
         
         
-        function getHumanChoice(){
-            let humanInput=prompt("Choose an option (Rock/Paper/Scissors):");
+        function getHumanChoice(option){
+            let humanInput=option;
             const firstLetter = humanInput.charAt(0);
             const slicedPart = humanInput.slice(1);
             humanChoice = firstLetter.toUpperCase() + slicedPart.toLowerCase();
@@ -37,19 +68,71 @@
         }
 
         function playRound(humanChoice, computerChoice){
-            alert(`You chose ${humanChoice} and the computer chose ${computerChoice}.`);            
+            const gameOptions = document.getElementById('game');
+            const choiceDisplay = document.getElementById('game-display');
+            const humanScoreChange = document.getElementById('human-score');
+            const computerScoreChange = document.getElementById('computer-score');
+            const endgameResult = document.getElementById('endgame-result');
+            choiceDisplay.innerHTML = "";
+            const choiceLog1 = document.createElement('h2');
+            const choiceLog2 = document.createElement('h2');
+            const choiceLog3 = document.createElement('h2');
+            const choiceLog4 = document.createElement('h2');
+            const endgame = document.createElement('h1');
+            choiceLog1.id='msg1'
+            choiceLog2.id='msg2'
+            choiceLog3.id='msg3'
+            choiceLog4.id='msg4'
+            endgame.id='msg5'
+            choiceDisplay.appendChild(choiceLog1); 
+            choiceLog1.innerText=`You chose ${humanChoice} and the computer chose ${computerChoice}.`;           
             if (humanChoice === computerChoice) {
-            alert(`${humanChoice} vs ${computerChoice}. It's a tie!`);
+            choiceDisplay.appendChild(choiceLog2);
+            choiceLog2.innerText=`${humanChoice} vs ${computerChoice}. It's a tie!`;
 
             }else if ((humanChoice == "Rock" && computerChoice == "Scissors") || 
                       (humanChoice == "Paper" && computerChoice == "Rock") || 
                       (humanChoice == "Scissors" && computerChoice == "Paper")
             ){
-            alert(`${humanChoice} beats ${computerChoice}. You win this round!`);
+            choiceDisplay.appendChild(choiceLog3);
+            choiceLog3.innerText= `${humanChoice} beats ${computerChoice}. You win this round!`;
             humanScore++;
+            humanScoreChange.innerText=`${humanScore}`;
             }else{
-            alert(`${computerChoice} beats ${humanChoice}. You lose this round!`);
+            choiceDisplay.appendChild(choiceLog4);
+            choiceLog4.innerText= `${computerChoice} beats ${humanChoice}. You lose this round!`;
             computerScore++;
+            computerScoreChange.innerText=`${computerScore}`;
+            }
+
+            if (humanScore>=5) {
+
+                endgameResult.appendChild(endgame);
+                endgame.innerText=`Game Over. You win!`;
+                gameOptions.innerHTML='';
+                choiceDisplay.innerHTML='';
+                const linkbtn = document.createElement('a');
+                const replay = document.createElement('button');
+                endgameResult.appendChild(linkbtn);
+                linkbtn.appendChild(replay);
+                linkbtn.href='./index.html'
+                replay.id='replay-btn'
+                replay.innerText='Play again';
+                
+            }else if(computerScore>=5){
+                endgameResult.appendChild(endgame);
+                endgame.innerText=`Game Over. You lose...`;
+                gameOptions.innerHTML='';
+                choiceDisplay.innerHTML='';
+                const linkbtn = document.createElement('a');
+                const replay = document.createElement('button');
+                endgameResult.appendChild(linkbtn);
+                linkbtn.appendChild(replay);
+                linkbtn.href='./index.html'
+                replay.id='replay-btn'
+                replay.innerText='Play again';
+                
+
             }
 
         }
@@ -58,44 +141,35 @@
             
             let humanScore = 0;
             let computerScore = 0;
-            playRound(humanSelection, computerSelection);
-            humanSelection = getHumanChoice();
-            computerSelection =getComputerChoice();
-            playRound(humanSelection, computerSelection);
-            humanSelection = getHumanChoice();
-            computerSelection =getComputerChoice();
-            playRound(humanSelection, computerSelection);
-            humanSelection = getHumanChoice();
-            computerSelection =getComputerChoice();
-            playRound(humanSelection, computerSelection);
-            humanSelection = getHumanChoice();
-            computerSelection =getComputerChoice();
-            playRound(humanSelection, computerSelection);
+          
         }
         let op=0
         
-        alert("Let's play Rock-Paper-Scissors");
-        let humanSelection = getHumanChoice();
-        let computerSelection =getComputerChoice();
-        playGame();
-        
-
-        if (humanScore > computerScore){
-            alert(`Final Scores:\nHuman: ${humanScore}\nComputer: ${computerScore}`);
-            alert("You win!")
-        }else if(humanScore ==computerScore){
-            alert(`Final Scores:\nHuman: ${humanScore}\nComputer: ${computerScore}`);
-            alert("It's a tie!")
-        }else{
-            alert(`Final Scores:\nHuman: ${humanScore}\nComputer: ${computerScore}`);
-            alert("You lose...")
-        }
-
         console.log("Developed by Mirko Sandoval")
         
-        
+        btnRock = document.getElementById('rock-btn');
+        btnRock.addEventListener('click', function(){
+            humanSelection = getHumanChoice("Rock");
+            computerSelection = getComputerChoice();
+            playRound(humanSelection, computerSelection);
+            
+        })
 
-        
+        btnPaper = document.getElementById('paper-btn');
+        btnPaper.addEventListener('click', function(){
+            humanSelection = getHumanChoice("Paper");
+            computerSelection = getComputerChoice();
+            playRound(humanSelection, computerSelection);
+            
+        })
+
+        btnScissors = document.getElementById('scissors-btn');
+        btnScissors.addEventListener('click', function(){
+            humanSelection = getHumanChoice("Scissors");
+            computerSelection = getComputerChoice();
+            playRound(humanSelection, computerSelection);
+            
+        })
 
 
     </script>
